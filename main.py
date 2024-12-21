@@ -18,6 +18,7 @@ api_key_secret = os.environ['TWILIO_API_KEY_SECRET']
 twiml_app_sid = os.environ['TWIML_APP_SID']
 twilio_number = os.environ['TWILIO_NUMBER']
 
+
 app = Flask(__name__)
 
 
@@ -33,7 +34,7 @@ def home():
 def get_token():
     identity = twilio_number
     outgoing_application_sid = twiml_app_sid
-
+    print("Check:  ",account_sid, api_key,api_key_secret)
     access_token = AccessToken(account_sid, api_key,
                                api_key_secret, identity=identity)
 
@@ -44,7 +45,7 @@ def get_token():
     access_token.add_grant(voice_grant)
 
     response = jsonify(
-        {'token': access_token.to_jwt().decode(), 'identity': identity})
+        {'token': access_token.to_jwt(), 'identity': identity})
     response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
